@@ -7,13 +7,16 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import com.pageobjects.HomePO;
+import com.pageobjects.DashboardPO;
+import com.pageobjects.HomePageOptionsPO;
 import com.pageobjects.LoginPagePO;
+import com.pageobjects.TasksPO;
 
 public class HomeTestIT {
 	public Logger logger = Logger.getLogger(this.getClass().getName());
@@ -35,7 +38,7 @@ public class HomeTestIT {
 	public void tearDown() {
 		driver.close();
 	}
-	
+
 	public void baseCode() {
 		driver.get(baseUrl);
 		LoginPagePO login = new LoginPagePO(driver);
@@ -48,11 +51,11 @@ public class HomeTestIT {
 
 	}
 
-	@Test(priority = 4)
+	@Test(priority = 1)
 	public void testHeaderMenuLinks() {
 		this.baseCode();
 		SoftAssert logInAssert = new SoftAssert();
-		HomePO homePO = new HomePO(driver);
+		DashboardPO homePO = new DashboardPO(driver);
 		// Then verify all tabs in home page
 		logger.info("asserting home page links");
 		logInAssert.assertEquals(homePO.homeLink.getText(), "Fat Free CRM", "Fat Free CRM link is not present");
@@ -70,10 +73,10 @@ public class HomeTestIT {
 
 	}
 
-	@Test(priority = 4)
+	@Test(priority = 1)
 	public void testTabs() {
 		this.baseCode();
-		HomePO homePO = new HomePO(driver);
+		DashboardPO homePO = new DashboardPO(driver);
 		SoftAssert logInAssert = new SoftAssert();
 		// Home page tabs
 		logInAssert.assertEquals(homePO.dashboardTab.getText(), "Dashboard", "Dashboard tab is not present");
@@ -97,10 +100,10 @@ public class HomeTestIT {
 
 	}
 
-	@Test(priority = 4)
+	@Test(priority = 1)
 	public void testLeftPaneLists() {
 		this.baseCode();
-		HomePO homePO = new HomePO(driver);
+		DashboardPO homePO = new DashboardPO(driver);
 		SoftAssert logInAssert = new SoftAssert();
 		// Left pane lists
 		logInAssert.assertEquals(homePO.globalLists.getText(), "Global lists", "Global lists should not be displayed");
@@ -113,10 +116,10 @@ public class HomeTestIT {
 
 	}
 
-	@Test(priority = 4)
+	@Test(priority = 1)
 	public void testMainPageLists() {
 		this.baseCode();
-		HomePO homePO = new HomePO(driver);
+		DashboardPO homePO = new DashboardPO(driver);
 		SoftAssert logInAssert = new SoftAssert();
 		// Main page lists
 		logInAssert.assertEquals(homePO.mainMyTasks.getText(), "My Tasks", "My Tasks items are not displayed");
@@ -130,20 +133,9 @@ public class HomeTestIT {
 				"Recent Activity items are not displayed");
 		logger.info("Recent Activity items will be displayed");
 		// Options link details
-		logInAssert.assertTrue(isElementOnThePage(homePO.mainOptions),  "Options links should be disaplayed ");
+		logInAssert.assertTrue(isElementOnThePage(homePO.mainOptions), "Options links should be disaplayed ");
 		logger.info("Options items will be displayed");
-		// logInAssert.assertEquals(homePO.optionsActivitiesLink.getText(),
-		// "Activities","Activities items are not displayed");
-		// logger.info("Activities items will be displayed");
-		// logInAssert.assertEquals(homePO.optionsAllUsersLink.getText(), "All
-		// Users","All Users items are not displayed");
-		// logger.info("All Users items will be displayed");
-		// logInAssert.assertEquals(homePO.optionsTwoDaysLink.getText(), "Two
-		// Days", "Two Days items are not displayed");
-		// logger.info("Two Days items will be displayed");
-		// logInAssert.assertEquals(homePO.optioncloseLink.getText(), "Close",
-		// "Close link is not displayed");
-		// logger.info("Close link will be displayed");
+
 		// Export Files
 		logInAssert.assertEquals(homePO.exportXLSFile.getText(), "XLS", "XLS file is not available");
 		logger.info("XLS file is available");
@@ -157,7 +149,55 @@ public class HomeTestIT {
 		logger.info("PERM file is available");
 
 		logInAssert.assertAll();
+	}
 
+	@Test(priority = 1)
+	public void testOptionsPageList() {
+		this.baseCode();
+		SoftAssert optionAssert = new SoftAssert();
+		HomePageOptionsPO options = new HomePageOptionsPO(driver);
+		options.mainOptions.click();
+		optionAssert.assertEquals(options.mainOptions.getText(), "Options", "Options link is not displayed");
+		logger.info("Options link is displayed");
+		optionAssert.assertEquals(options.optionsAllActivitiesLink.getText(), "Activities",
+				"Activities link is not displayed");
+		logger.info("Activities link is displayed");
+		optionAssert.assertEquals(options.optionsAllUsersLink.getText(), "All Users",
+				"All Users link is not displayed");
+		logger.info("All Users link is displayed");
+		optionAssert.assertEquals(options.optionsTwoDaysLink.getText(), "Two Days", "Two Days link is displayed");
+		logger.info("Two Days link is displayed");
+	}
+
+	@Test(priority = 1)
+	public void testalltabs() {
+		this.baseCode();
+		SoftAssert checkAssert = new SoftAssert();
+		DashboardPO tabs = new DashboardPO(driver);
+		tabs.tasksTab.click();
+		checkAssert.assertEquals(tabs.tasksTab.getText(), "Tasks", "Tasks tab is not displayed");
+		logger.info("Tasks tab is displayed");
+		TasksPO tasks = new TasksPO(driver);
+		tasks.leftPaneAssignedList.click();
+		checkAssert.assertEquals(tasks.leftPaneAssignedList.getText(), "Assigned", "Assigned tab is not available");
+		logger.info("Assigned tab is available");
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		// tasks.leftPanePendingList.click();
+		// checkAssert.assertEquals(tasks.leftPanePendingList.getText(),
+		// "Pending", "Pending tab is not available");
+		// logger.info("Pending tab is available");
+		// tasks.leftPaneCompletedList.click();
+		// checkAssert.assertEquals(tasks.leftPaneCompletedList.getText(),
+		// "Completed", "Completed tab is not available");
+		// logger.info("Completed tab is available");
+		tasks.overdueAssignedCheckbox.click();
+		checkAssert.assertEquals(tasks.overdueAssignedCheckbox.getText(), "Overdue",
+				"Overdue checkbox is not displayed");
+		logger.info("Overdue checkbox is displayed");
+		tasks.thisWeekAssignedCheckbox.click();
+		checkAssert.assertEquals(tasks.thisWeekAssignedCheckbox.getText(), "This Week",
+				"This Week checkbox is not displayed");
+		logger.info("This Week checkbox is displayed");
 	}
 
 	public boolean isElementOnThePage(WebElement element) {

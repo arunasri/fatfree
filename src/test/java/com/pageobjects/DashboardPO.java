@@ -6,9 +6,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-public class HomePO {
+public class DashboardPO {
 	public WebDriver driver;
-	public HomePO(WebDriver driver) {
+	public DashboardPO(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 	}
@@ -63,14 +63,7 @@ public class HomePO {
 	public WebElement mainRecentActivity;
 	@FindBy(how = How.PARTIAL_LINK_TEXT , using = "Options")
 	public WebElement mainOptions;
-	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "activities")
-	public WebElement optionsActivitiesLink;
-	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "all users")
-	public WebElement optionsAllUsersLink;
-	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "two days")
-	public WebElement optionsTwoDaysLink;
-	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "x")
-	public WebElement optioncloseLink;
+	
 	
 	//Export link in bottom page
 	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "XLS")

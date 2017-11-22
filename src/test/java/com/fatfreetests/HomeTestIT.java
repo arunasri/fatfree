@@ -1,18 +1,22 @@
 package com.fatfreetests;
 
+import java.sql.DriverManager;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.createobjects.CreateTasksPO;
 import com.pageobjects.DashboardPO;
 import com.pageobjects.HomePageOptionsPO;
 import com.pageobjects.LoginPagePO;
@@ -20,7 +24,7 @@ import com.pageobjects.TasksPO;
 
 public class HomeTestIT {
 	public Logger logger = Logger.getLogger(this.getClass().getName());
-
+	
 	private WebDriver driver;
 	private String baseUrl;
 
@@ -31,7 +35,7 @@ public class HomeTestIT {
 
 		driver = new ChromeDriver();
 		baseUrl = "http://qacrm.herokuapp.com/";
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 	}
 
 	@AfterMethod(alwaysRun = true)
@@ -198,6 +202,47 @@ public class HomeTestIT {
 		checkAssert.assertEquals(tasks.thisWeekAssignedCheckbox.getText(), "This Week",
 				"This Week checkbox is not displayed");
 		logger.info("This Week checkbox is displayed");
+	}
+
+	@Test
+	public void testTasks() {
+		this.baseCode();
+		SoftAssert checkAssert = new SoftAssert();
+		DashboardPO tabs = new DashboardPO(driver);
+		// Click on task tab
+		tabs.tasksTab.click();
+		checkAssert.assertEquals(tabs.tasksTab.getText(), "Tasks", "Tasks title is not present");
+		logger.info("Tasks title is present");
+		// Click on Create Task
+		TasksPO task = new TasksPO(driver);
+		task.createTaskLink.click();
+
+		WebDriverWait waitUntilCreateTaskFormOpens = new WebDriverWait(driver, 30);
+		waitUntilCreateTaskFormOpens.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("task_name"))));
+		
+		CreateTasksPO createTasksPO = new CreateTasksPO(driver);
+		
+		checkAssert.assertEquals(createTasksPO.nameLabel.getText(), "Name:", "Name: label not found, found: "+task.createTaskLink.getText());
+		logger.info("Task Name label is present");
+		
+		task.createTaskLink.click();
+		WebDriverWait waitUntilTaskFormCLoses = new WebDriverWait(driver, 30);
+		waitUntilTaskFormCLoses.until(ExpectedConditions.invisibilityOfElementLocated(By.id("task_name")));
+		
+//		checkAssert.assertEquals(task.tasksTitle.getText(), "Tasks", "Tasks title is not present");
+//		logger.info("Tasks title is present");
+//		// Verify Name label
+//		CreateTasksPO createtask = new CreateTasksPO(driver);
+//		createtask.nameLabel.getText();
+//		checkAssert.assertEquals(createtask.nameLabel.getText(), "Name:", "Name label is not present");
+//		logger.info("Name label is present");
+//		// Name text field
+//		createtask.nameTextfield.sendKeys("Jerry");
+//		checkAssert.assertEquals(createtask.nameTextfield.getText(), "task_name", "Name text field is not present");
+//		logger.info("Name text field is present");
+
+		checkAssert.assertAll();
+
 	}
 
 	public boolean isElementOnThePage(WebElement element) {

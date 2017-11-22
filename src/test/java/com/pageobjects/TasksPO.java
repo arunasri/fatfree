@@ -56,10 +56,11 @@ public class TasksPO {
 	@FindBy(how = How.XPATH, using = ".//div[contains(text()='Total Assigned Tasks')]")
 	public WebElement totalPendingTasksAssignedCheckbox;
 	// Tasks main page
-	@FindBy(how = How.XPATH, using = ".//div[contains(text()='Tasks')]")
+	@FindBy(how = How.ID, using = "title")
 	public WebElement tasksTitle;
 	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "Create Task")
 	public WebElement createTaskLink;
+	//@FindBy(how = How.XPATH, using = "//a[contains(@class, ''")
 	
 	//Export links in tasks tab
 

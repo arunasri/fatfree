@@ -1,11 +1,13 @@
 package com.fatfreetests;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -74,12 +76,36 @@ public class LeadsIT {
 						ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//div[@class = 'label req top']"))));
 				logger.info("verified create lead name is present");
 				CreateLeadPO createLead = new CreateLeadPO(driver);
-				createLead.leadFirstName.sendKeys("Steve");
+				double random = Math.random();
+				String leadName = "New Lead " + random;				
+				createLead.leadFirstName.sendKeys(leadName);
+				logger.info("creating lead" + leadName);
+//				createLead.leadFirstName.sendKeys("Steve");
 				createLead.leadLastName.sendKeys("Eddings");
 				createLead.leadEmail.sendKeys("test@gmail.com");
 				createLead.leadPhone.sendKeys("123-456-7890");
 				createLead.createLeadButton.click();
+				logger.info("Create lead is created successfully");
+				//Deleting the Lead
+				String changing = "New Lead 0.45578848689972995";
+				String xpath = "//label[contains(text(),'" + changing + "')]"; 
+				Actions action1 = new Actions(driver);
+				action1.moveToElement(driver.findElement(By.xpath(xpath)))
+						.moveToElement(driver.findElement(
+								By.xpath(xpath + "/parent::div/preceding-sibling::div/a[contains(text(),'Delete!')]")))
+						.click().build().perform();
+				checkAssert.assertAll();
+				List<WebElement> elements = driver.findElements(By.xpath(""));
+				elements.size();
 				
+				
+				String leadXPath = "//label[contains(text(),'" + leadName + "')]";
+				String deleteLinkXPath = leadName + "/parent::div/preceding-sibling::div/a[contains(text(),'Delete!')]";
+				Actions action2 = new Actions(driver);
+				action2.moveToElement(driver.findElement(By.xpath(leadXPath)))
+						.moveToElement(driver.findElement(By.xpath(deleteLinkXPath))).click().build().perform();
+
+				checkAssert.assertAll();
 	}
 }
 

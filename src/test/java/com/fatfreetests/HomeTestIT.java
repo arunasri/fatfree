@@ -57,14 +57,20 @@ public class HomeTestIT {
 
 	@Test(priority = 1)
 	public void testHeaderMenuLinks() {
+		//Given
+			//Login to WebSite
 		this.baseCode();
 		SoftAssert logInAssert = new SoftAssert();
+		//When
+			//Go to Dashboard tab
 		DashboardPO homePO = new DashboardPO(driver);
-		// Then verify all tabs in home page
+		
+		// Then 
+			//verify all tabs in Dashboard page
 		logger.info("asserting home page links");
 		logInAssert.assertEquals(homePO.homeLink.getText(), "Fat Free CRM", "Fat Free CRM link is not present");
 		logger.info("Fat Free CRM link is present");
-		// Main menu links
+			// Main menu links
 		logInAssert.assertEquals(homePO.welcomeUsername.getText(), "George", "User is not logged in as George");
 		logger.info("User is logged in as George");
 		logInAssert.assertEquals(homePO.quickFindLink.getText(), "Quick find", "Quick find link is not present");
@@ -79,10 +85,15 @@ public class HomeTestIT {
 
 	@Test(priority = 1)
 	public void testTabs() {
+		//Given
+			//Login to Fat Free CRM Website
 		this.baseCode();
+		//When
+			//Goto Dashboard tab
 		DashboardPO homePO = new DashboardPO(driver);
 		SoftAssert logInAssert = new SoftAssert();
-		// Home page tabs
+		//Then
+			// Verify tabs on Home page
 		logInAssert.assertEquals(homePO.dashboardTab.getText(), "Dashboard", "Dashboard tab is not present");
 		logger.info("Dashboard tab is present");
 		logInAssert.assertEquals(homePO.tasksTab.getText(), "Tasks", "Tasks link is not present");
@@ -106,10 +117,15 @@ public class HomeTestIT {
 
 	@Test(priority = 1)
 	public void testLeftPaneLists() {
+		//Given
+			//Login to Fat Free CRM website
 		this.baseCode();
+		//When
+			//Goto Dashboard tab
 		DashboardPO homePO = new DashboardPO(driver);
 		SoftAssert logInAssert = new SoftAssert();
-		// Left pane lists
+		//Then
+			// Verify Left pane lists
 		logInAssert.assertEquals(homePO.globalLists.getText(), "Global lists", "Global lists should not be displayed");
 		logger.info("Global lists should be displayed");
 		logInAssert.assertEquals(homePO.myLists.getText(), "My lists", "My lists should not be displayed");
@@ -122,10 +138,15 @@ public class HomeTestIT {
 
 	@Test(priority = 1)
 	public void testMainPageLists() {
+		//Given
+			//Login to Fat Free CRM WebSite
 		this.baseCode();
+		//When
+			//Goto Dashboard tab
 		DashboardPO homePO = new DashboardPO(driver);
 		SoftAssert logInAssert = new SoftAssert();
-		// Main page lists
+		//Then
+			// Verify Main page lists 
 		logInAssert.assertEquals(homePO.mainMyTasks.getText(), "My Tasks", "My Tasks items are not displayed");
 		logger.info("Main items will be displayed");
 		logInAssert.assertEquals(homePO.mainMyOpportunities.getText(), "My Opportunities",
@@ -157,8 +178,12 @@ public class HomeTestIT {
 
 	@Test(priority = 1)
 	public void testOptionsPageList() {
+		//Given
+			//Login to Fat Free CRM Website
 		this.baseCode();
 		SoftAssert optionAssert = new SoftAssert();
+		//When
+			//Goto HomePageOptions
 		HomePageOptionsPO options = new HomePageOptionsPO(driver);
 		options.mainOptions.click();
 		optionAssert.assertEquals(options.mainOptions.getText(), "Options", "Options link is not displayed");

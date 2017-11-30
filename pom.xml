@@ -13,10 +13,12 @@
   <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<chrome.path>${env.CHROMEDRIVER}</chrome.path>
 		<selenium.grid.url>http://104.131.31.97:4444/wd/hub</selenium.grid.url>
 		<site.base.url>https://qasanguine.herokuapp.com/</site.base.url>
-	</properties>
+	  <cucumber.version>1.2.0</cucumber.version>
+	  <selenium.version>3.0.0-beta2</selenium.version>
+
+  </properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -45,6 +47,18 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -62,7 +76,6 @@
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.19.1</version>
 				<configuration>
-					<log4j.configuration>log4j.properties</log4j.configuration>
 					<threadCount>5</threadCount>
 					<parallel>methods</parallel>
 				</configuration>
